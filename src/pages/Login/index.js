@@ -1,40 +1,78 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import { Container, Input, Button, ButtonText } from "./styles";
-import api from "~/services/api";
+import { Container, Input, Button, ButtonText, Error, ButtonSignup, ButtonTextSignup } from "./styles";
+import { Creators as AuthActions } from "~/store/ducks/auth";
+import { ActivityIndicator } from "react-native";
+import { navigate } from "~/services/navigation";
 
 class Login extends Component {
   state = { email: "", password: "" };
 
   handleSubmit = async () => {
+    const { loginRequest } = this.props;
     const { email, password } = this.state;
 
-    try {
-      await api.post("/sessions", {
-        email,
-        password
-      });
-    } catch (error) {
-      console.tron(error);
-    }
+    loginRequest({ email, password });
   };
+
+  goSignup = () => {
+    navigate('Signup')
+  }
+
   render() {
-    const { email } = this.state;
+    const { email, password } = this.state;
+    const {
+      auth,
+      auth: { loading, error }
+    } = this.props;
+
     return (
       <Container>
+        {error && (
+          <Error>Email ou senha incorreto, por favor tente novamente</Error>
+        )}
+
         <Input
           value={email}
           onChangeText={text => this.setState({ email: text })}
           autoCapitalize="none"
           autoCorrect={false}
-          placeholder="Digite seu email"
+          placeholder="Email"
+        />
+        <Input
+          value={password}
+          onChangeText={text => this.setState({ password: text })}
+          autoCapitalize="none"
+          autoCorrect={false}
+          secureTextEntry
+          placeholder="Senha"
         />
         <Button onPress={this.handleSubmit}>
-          <ButtonText>Entrar</ButtonText>
+          {loading ? (
+            <ActivityIndicator size="small" color="#FFF" />
+          ) : (
+            <ButtonText>Entrar</ButtonText>
+          )}
         </Button>
+        <ButtonSignup onPress={this.goSignup}>
+          <ButtonTextSignup>Criar Conta</ButtonTextSignup>
+        </ButtonSignup>
       </Container>
     );
   }
 }
 
-export default Login;
+const mapStateToProps = state => ({
+  auth: state.auth,
+  profile: state.profile
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(AuthActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
 import auth from './auth'
+import profile from './profile'
+
 const reducers = combineReducers({
-  // Remova essa linha depois de adicionar seus ducks
-  example: () => [],
-  auth
+  auth,
+  profile
 });
 
 export default reducers;

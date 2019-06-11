@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
 
-export default class index extends Component {
+export default class Categories extends Component {
   render() {
     return (
       <View>
-        <Text> Repositors </Text>
+        <Text> Categories </Text>
       </View>
     )
   }

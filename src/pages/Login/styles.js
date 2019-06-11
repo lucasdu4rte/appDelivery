@@ -17,6 +17,7 @@ export const Input = styled.TextInput.attrs({
   height: 52px;
   font-size: 16px;
   color: #333;
+  margin-bottom: 5px;
 `
 
 export const Button = styled.TouchableOpacity`
@@ -32,13 +33,24 @@ export const ButtonText = styled.Text`
   color: #FFF;
   font-size: 18px;
   font-weight: bold;
+`
 
+export const ButtonSignup = styled.TouchableOpacity`
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+`
+
+export const ButtonTextSignup = styled.Text`
+  color: #FFF;
+  font-size: 14px;
+  font-weight: bold;
 `
 
 export const Error = styled.Text`
   color: #ff917e;
   margin-bottom: 20px;
-  text-align: 16px;
   font-size: 16px;
   font-weight: bold;
 `
