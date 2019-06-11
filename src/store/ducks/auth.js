@@ -16,7 +16,6 @@ const INITIAL_STATE = {
 };
 
 export default function auth(state = INITIAL_STATE, action) {
-
   switch (action.type) {
     case Types.SIGNUP_REQUEST:
       return { ...state, loading: true, error: null };
@@ -52,13 +51,10 @@ export const Creators = {
   }),
   signupFailure: error => ({ type: Types.SIGNUP_FAILURE, payload: { error } }),
 
-  loginRequest: data => {
-    console.tron.log(Types.LOGIN_REQUEST);
-    return {
-      type: Types.LOGIN_REQUEST,
-      payload: data
-    };
-  },
+  loginRequest: data => ({
+    type: Types.LOGIN_REQUEST,
+    payload: data
+  }),
   loginSuccess: data => ({
     type: Types.LOGIN_SUCCESS,
     payload: data
