@@ -1,14 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
-import { Container, Input, Button, ButtonText, Error, ButtonSignup, ButtonTextSignup } from "./styles";
-import { Creators as AuthActions } from "~/store/ducks/auth";
 import { ActivityIndicator } from "react-native";
+
+import {
+  Container,
+  Input,
+  Button,
+  ButtonText,
+  Error,
+  ButtonSignup,
+  ButtonTextSignup
+} from "./styles";
+import { Creators as AuthActions } from "~/store/ducks/auth";
 import { navigate } from "~/services/navigation";
 
 class Login extends Component {
-  state = { email: "", password: "" };
+
+  state = { email: "lucasdu4rte@gmail.com", password: "11223344l" };
 
   handleSubmit = async () => {
     const { loginRequest } = this.props;
@@ -18,8 +27,8 @@ class Login extends Component {
   };
 
   goSignup = () => {
-    navigate('Signup')
-  }
+    navigate("Signup");
+  };
 
   render() {
     const { email, password } = this.state;

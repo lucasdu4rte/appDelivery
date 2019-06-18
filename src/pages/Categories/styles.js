@@ -1,17 +1,15 @@
 import styled from "styled-components/native";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
+import { colors } from "~/styles";
 
 export const Container = styled.View`
   flex: 1;
-  background: #fff;
-  /* align-items: center;
-  justify-content: center;
-  padding: 30px; */
+  /* background: #ecf0f1; */
 `;
 
 export const CategoryList = styled.FlatList.attrs({
   contentContainerStyle: {
-    paddingTop: getStatusBarHeight() + 30,
+    // paddingTop: getStatusBarHeight() + 30,
     paddingBottom: 30
   }
 })``;
@@ -25,20 +23,21 @@ export const PageTitle = styled.Text`
 `;
 
 export const Category = styled.TouchableOpacity.attrs({
-  activeOpacity: 0.6
+  activeOpacity: 0.9
 })`
   flex-direction: row;
   align-items: center;
   padding: 15px 20px;
   margin: 20px 20px 0 20px;
-  border-radius: 4px;
+  border-radius: 6px;
   background: #fff;
+  height: 110px;
 `;
 
 export const Cover = styled.Image`
   width: 20px;
   height: 20px;
-  border-radius: 4px;
+  border-radius: 6px;
 `;
 
 export const Info = styled.View`
@@ -48,22 +47,25 @@ export const Info = styled.View`
 
 export const Title = styled.Text`
   /* color: #fff; */
-  color: #111;
-  font-size: 15px;
+  color: ${colors.darker};
+  font-size: 13px;
   font-weight: bold;
 `;
 
 export const Description = styled.Text`
-  /* color: #fff; */
+  color: ${colors.darkTransparent};
   margin-top: 5px;
-  color: #111;
-  font-size: 13px;
-  text-align: justify;
+  font-size: 12px;
 `;
 
+export const PrepareTime = styled.View`
+  flex-direction: row;
+  margin-top: 5px;
+  align-items: center;
+`;
 
 export const Count = styled.Text`
-  color: #95a5a6;
+  color: ${colors.darkTransparent};
   font-size: 13px;
   margin-top: 3px;
 `;

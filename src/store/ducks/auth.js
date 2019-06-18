@@ -10,9 +10,13 @@ export const Types = {
 };
 
 const INITIAL_STATE = {
+  authChecked: false,
+  signin: false,
   token: null,
+  roles: [],
+  permissions: [],
   loading: false,
-  error: null
+  error: null,
 };
 
 export default function auth(state = INITIAL_STATE, action) {

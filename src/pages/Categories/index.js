@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Text } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { ActivityIndicator } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";;
 
 import {
   Container,
@@ -13,10 +12,14 @@ import {
   Info,
   Title,
   Description,
+  PrepareTime,
   Count
 } from "./styles";
 
 import { Creators as TypesActions } from "~/store/ducks/types";
+
+import Header from "~/components/Header";
+import { colors } from "~/styles";
 
 class Categories extends Component {
   async componentDidMount() {
@@ -24,36 +27,46 @@ class Categories extends Component {
     loadTypesRequest();
   }
 
+  handleCategoryPress = category => {
+    const { navigation } = this.props;
+    navigation.navigate("Category", { category });
+  };
+
   render() {
     const { types } = this.props;
     console.tron.log("types", types);
 
     return (
       <Container>
+        <Header title="Pizzaria Don Juan" />
         <CategoryList
-          ListHeaderComponent={() => <PageTitle>Pizzaria Don Juan</PageTitle>}
+          // ListHeaderComponent={() => <PageTitle>Pizzaria Don Juan</PageTitle>}
           data={types.data}
           keyExtractor={ty => String(ty.id)}
           renderItem={({ item: category }) => (
             <Category
-              onPress={() => {}}
+              onPress={() => this.handleCategoryPress(category)}
               style={{
                 shadowColor: "#bdc3c7",
                 shadowOffset: {
                   width: 0,
-                  height: 7,
+                  height: 7
                 },
                 shadowOpacity: 0.43,
                 shadowRadius: 9.51,
-
-                elevation: 15,
+                elevation: 15
               }}
             >
               <Cover source={{ uri: category.photo_url }} />
               <Info>
                 <Title>{category.type}</Title>
                 <Description>{category.description}</Description>
-                <Count>{`10 mins`}</Count>
+                <PrepareTime>
+                  <Icon name="clock-o" size={16} style={{ marginRight: 5, color: colors.darkTransparent }} />
+                  <Count>
+                    {`${category.prepare_time} mins`}
+                  </Count>
+                </PrepareTime>
               </Info>
             </Category>
           )}
@@ -67,6 +80,10 @@ class Categories extends Component {
     );
   }
 }
+
+// Categories.navigationOptions = {
+//   title: 'Pizzaria Don Juan',
+// }
 
 const mapStateToProps = state => ({
   types: state.types
