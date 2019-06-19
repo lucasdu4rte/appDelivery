@@ -1,28 +1,72 @@
 import React, { Component } from "react";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-import { Container, ProductList, Product, Photo, Title } from "./styles";
+import {
+  Container,
+  ProductList,
+  ProductListView,
+  Product,
+  Cover,
+  Title,
+  Actions,
+  Info,
+  ButtonRemove,
+  ButtonText,
+  Description,
+  PrepareTime,
+  Price,
+  ButtonMore,
+  ButtonGoOrder,
+  ButtonTextGoOrder,
+  ButtonTextRemove,
+  ButtonsContainer
+} from "./styles";
+
 import Header from "~/components/Header";
+import { colors } from "~/styles";
 
 class Cart extends Component {
-  handleCartPress = (category) => {
+  handleCartPress = category => {
     // const {navigation} = this.props
     // console.tron.log('ONPRESS')
     // navigation.navigate('Sizes', { category })
-  }
+  };
 
   render() {
     const { navigation } = this.props;
     // const category = navigation.getParam("category");
+    const items = [
+      {
+        id: Math.random(),
+        photo_url: "",
+        size: "Tamanho: Média",
+        description: "Pizza Calabresa",
+        price: 42
+      },
+      {
+        id: Math.random(),
+        photo_url: "",
+        size: "Lata 300ML",
+        description: "Coca cola",
+        price: 42
+      },
+      {
+        id: Math.random(),
+        photo_url: "",
+        size: "Tamanho: Pequena",
+        description: "Pizza 4 Queijos",
+        price: 29
+      }
+    ];
     return (
       <Container>
-        <Header title="Carrinho" />
+        <Header title="Carrinho" leftComponent="R$107,00" />
         <ProductList
-          numColumns={1}
-          data={[]}
-          keyExtractor={product => String(product.id)}
-          renderItem={({ item: product }) => (
+          data={items}
+          keyExtractor={item => String(item.id)}
+          renderItem={({ item }) => (
             <Product
-              onPress={() => this.handleCartPress(category)}
+              // onPress={() => this.handleCategoryPress(category)}
               style={{
                 shadowColor: "#bdc3c7",
                 shadowOffset: {
@@ -34,11 +78,38 @@ class Cart extends Component {
                 elevation: 15
               }}
             >
-              <Photo source={{ uri: category.photo_url }} />
-              <Title>{product.description}</Title>
+              <Cover source={{ uri: item.photo_url }} />
+              <Info>
+                <Description>{item.description}</Description>
+                <PrepareTime>{item.size}</PrepareTime>
+                <Price>
+                  R$
+                  {Number(item.price)
+                    .toFixed(2)
+                    .replace(".", ",")}
+                </Price>
+              </Info>
+              <Actions>
+                <ButtonRemove>
+                  <ButtonTextRemove>
+                    <Icon name="trash" size={20} />
+                  </ButtonTextRemove>
+                </ButtonRemove>
+              </Actions>
             </Product>
           )}
         />
+        <ButtonsContainer>
+          <ButtonMore>
+            <ButtonText>Adicionar mais itens</ButtonText>
+          </ButtonMore>
+          <ButtonGoOrder>
+            <ButtonTextGoOrder>
+              Realizar Pedido
+              <Icon name="arrow-right" size={20} />
+            </ButtonTextGoOrder>
+          </ButtonGoOrder>
+        </ButtonsContainer>
       </Container>
     );
   }
@@ -53,4 +124,4 @@ class Cart extends Component {
 //   )
 // }
 
-export default Cart
+export default Cart;

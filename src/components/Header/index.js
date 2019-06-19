@@ -23,7 +23,7 @@ class Header extends Component {
   };
 
   render() {
-    const { title } = this.props;
+    const { title, leftComponent } = this.props;
     return (
       <View style={styles.container}>
         <Background source={headerImage} />
@@ -38,10 +38,13 @@ class Header extends Component {
         </View>
 
         <Text style={styles.title}>{title}</Text>
-
+        {leftComponent ? <Text style={styles.title}>
+          {leftComponent}
+        </Text> :
         <TouchableOpacity onPress={() => this.handleGoCart()}>
           <Icon name="shopping-bag" size={16} style={styles.icon} />
         </TouchableOpacity>
+      }
       </View>
     );
   }
