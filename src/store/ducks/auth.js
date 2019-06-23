@@ -6,17 +6,18 @@ export const Types = {
   LOGIN_SUCCESS: "auth/LOGIN_SUCCESS",
   LOGIN_FAILURE: "auth/LOGIN_FAILURE",
   CLEAR_ERROR: "auth/CLEAR_ERROR",
-  LOGOUT: "auth/LOGOUT"
+  LOGOUT: "auth/LOGOUT",
+  INIT_CHECK_SUCCESS: "auth/INIT_CHECK_SUCCESS"
 };
 
 const INITIAL_STATE = {
   authChecked: false,
-  signin: false,
+  signedIn: false,
   token: null,
   roles: [],
   permissions: [],
   loading: false,
-  error: null,
+  error: null
 };
 
 export default function auth(state = INITIAL_STATE, action) {
@@ -31,15 +32,23 @@ export default function auth(state = INITIAL_STATE, action) {
     case Types.LOGIN_REQUEST:
       return { ...state, loading: true, error: null, token: null };
     case Types.LOGIN_SUCCESS:
-      return { ...state, loading: false, token: action.payload.token };
+      return {
+        ...state,
+        loading: false,
+        signedIn: true,
+        token: action.payload.token
+      };
     case Types.LOGIN_FAILURE:
       return { ...state, loading: false, error: action.payload.error };
 
     case Types.LOGOUT:
-      return { ...state, token: null };
+      return { ...state, signedIn: false, token: null };
 
     case Types.CLEAR_ERROR:
       return { ...state, error: null };
+
+    case Types.INIT_CHECK_SUCCESS:
+      return { ...state, authChecked: true };
     default:
       return state;
   }
@@ -67,5 +76,9 @@ export const Creators = {
 
   logout: () => ({ type: Types.LOGOUT }),
 
-  clearError: () => ({ type: Types.CLEAR_ERROR })
+  clearError: () => ({ type: Types.CLEAR_ERROR }),
+
+  checkSuccess: () => ({
+    type: Types.INIT_CHECK_SUCCESS
+  })
 };
