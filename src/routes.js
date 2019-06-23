@@ -1,6 +1,6 @@
 import {
   createAppContainer,
-  createSwitchNavigator,
+  createSwitchNavigator
   // createStackNavigator
 } from "react-navigation";
 
@@ -11,16 +11,16 @@ import Category from "~/pages/Category";
 import Sizes from "~/pages/Sizes";
 import Cart from "~/pages/Cart";
 
-const Routes = createAppContainer(
-  // createStackNavigator(
-  createSwitchNavigator(
-    { Categories, Login, Signup, Category, Sizes, Cart }
-    // {
-    //   defaultNavigationOptions: {
-    //     header: 'Categories'
-    //   }
-    // }
-  )
-);
+function createNavigator(isLoggedIn = false) {
+  return createAppContainer(
+    // createStackNavigator(
+    createSwitchNavigator(
+      { Categories, Login, Signup, Category, Sizes, Cart },
+      {
+        initialRouteName: isLoggedIn ? "Categories" : "Login"
+      }
+    )
+  );
+}
 
-export default Routes;
+export default createNavigator;

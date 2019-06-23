@@ -6,13 +6,12 @@ import '~/config/StatusBarConfig';
 import { Provider } from 'react-redux';
 import store from '~/store';
 
-import Routes from '~/routes';
-import { setNavigator } from '~/services/navigation';
+import App from './App'
 
-const App = () => (
+const Root = () => (
   <Provider store={store}>
-    <Routes ref={setNavigator} />
+    <App />
   </Provider>
 );
 
-export default App;
+export default Root;
