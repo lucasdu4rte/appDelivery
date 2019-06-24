@@ -13,7 +13,7 @@ export default function cart(state = INITIAL_STATE, action) {
     case Types.ADD_ITEM:
       return [...state, action.payload];
     case Types.REMOVE_ITEM:
-      return state.filter(item => item.id === action.payload.id);
+      return state.filter(item => item.id !== action.payload.id);
     case Types.RESET_CART:
       return [];
     default:
@@ -24,5 +24,5 @@ export default function cart(state = INITIAL_STATE, action) {
 export const Creators = {
   addItem: data => ({ type: Types.ADD_ITEM, payload: data }),
   removeItem: data => ({ type: Types.REMOVE_ITEM, payload: data }),
-  resetCart: data => ({ type: Types.RESET_CART })
+  resetCart: () => ({ type: Types.RESET_CART })
 };

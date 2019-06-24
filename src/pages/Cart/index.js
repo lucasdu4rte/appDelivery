@@ -36,13 +36,20 @@ class Cart extends Component {
   };
 
   render() {
-    const { cart: items, removeItem } = this.props;
-    console.tron.log("items", items);
+    const { navigation, items, total, removeItem } = this.props;
     // const category = navigation.getParam("category");
 
     return (
       <Container>
-        <Header title="Carrinho" leftComponent="R$107,00" />
+        <Header
+          title="Carrinho"
+          leftComponent={
+            "R$" +
+            Number(total)
+              .toFixed(2)
+              .replace(".", ",")
+          }
+        />
         <ProductList
           // data={[]}
           data={items}
@@ -73,7 +80,7 @@ class Cart extends Component {
                 </Price>
               </Info>
               <Actions>
-                <ButtonRemove>
+                <ButtonRemove onPress={() => removeItem(item)}>
                   <ButtonTextRemove>
                     <Icon name="trash" size={20} />
                   </ButtonTextRemove>
@@ -83,13 +90,13 @@ class Cart extends Component {
           )}
         />
         <ButtonsContainer>
-          <ButtonMore>
+          <ButtonMore onPress={() => navigation.navigate("Categories")}>
             <ButtonText>Adicionar mais itens</ButtonText>
           </ButtonMore>
           <ButtonGoOrder>
             <ButtonTextGoOrder>
               Realizar Pedido
-              <Icon name="chevron-right" size={16} style={{marginLeft: 5}} />
+              <Icon name="chevron-right" size={16} style={{ marginLeft: 5 }} />
             </ButtonTextGoOrder>
           </ButtonGoOrder>
         </ButtonsContainer>
@@ -108,10 +115,12 @@ class Cart extends Component {
 // }
 
 const mapStateToProps = state => ({
-  cart: state.cart
+  items: state.cart,
+  total: state.cart.reduce((acc, currentItem) => currentItem.price + acc, 0)
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ ...CartActions }, dispatch);
 
 export default connect(
   mapStateToProps,
