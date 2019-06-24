@@ -113,6 +113,8 @@ export const ButtonTextGoOrder = styled.Text`
   color: white;
   font-size: 16px;
   font-weight: bold;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const ButtonTextRemove = styled.Text`

@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
+import { Creators as CartActions } from "~/store/ducks/cart";
+
 import {
   Container,
   ProductList,
-  ProductListView,
   Product,
   Cover,
-  Title,
   Actions,
   Info,
   ButtonRemove,
@@ -23,7 +26,7 @@ import {
 } from "./styles";
 
 import Header from "~/components/Header";
-import { colors } from "~/styles";
+// import { colors } from "~/styles";
 
 class Cart extends Component {
   handleCartPress = category => {
@@ -33,35 +36,15 @@ class Cart extends Component {
   };
 
   render() {
-    const { navigation } = this.props;
+    const { cart: items, removeItem } = this.props;
+    console.tron.log("items", items);
     // const category = navigation.getParam("category");
-    const items = [
-      {
-        id: Math.random(),
-        photo_url: "",
-        size: "Tamanho: Média",
-        description: "Pizza Calabresa",
-        price: 42
-      },
-      {
-        id: Math.random(),
-        photo_url: "",
-        size: "Lata 300ML",
-        description: "Coca cola",
-        price: 42
-      },
-      {
-        id: Math.random(),
-        photo_url: "",
-        size: "Tamanho: Pequena",
-        description: "Pizza 4 Queijos",
-        price: 29
-      }
-    ];
+
     return (
       <Container>
         <Header title="Carrinho" leftComponent="R$107,00" />
         <ProductList
+          // data={[]}
           data={items}
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
@@ -106,7 +89,7 @@ class Cart extends Component {
           <ButtonGoOrder>
             <ButtonTextGoOrder>
               Realizar Pedido
-              <Icon name="arrow-right" size={20} />
+              <Icon name="chevron-right" size={16} style={{marginLeft: 5}} />
             </ButtonTextGoOrder>
           </ButtonGoOrder>
         </ButtonsContainer>
@@ -124,4 +107,13 @@ class Cart extends Component {
 //   )
 // }
 
-export default Cart;
+const mapStateToProps = state => ({
+  cart: state.cart
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Cart);

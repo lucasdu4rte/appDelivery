@@ -33,7 +33,6 @@ class Login extends Component {
   render() {
     const { email, password } = this.state;
     const {
-      auth,
       auth: { loading, error }
     } = this.props;
 
@@ -49,6 +48,7 @@ class Login extends Component {
           autoCapitalize="none"
           autoCorrect={false}
           placeholder="Email"
+          autoFocus
         />
         <Input
           value={password}

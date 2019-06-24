@@ -33,7 +33,7 @@ class Header extends Component {
             hitSlop={{ top: 5, left: 5, right: 5, bottom: 5 }}
             onPress={this.handleBack}
           >
-            <Icon name="arrow-left" size={16} style={styles.icon} />
+            <Icon name="chevron-left" size={16} style={styles.icon} />
           </TouchableOpacity>
         </View>
 

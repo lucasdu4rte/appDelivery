@@ -1,21 +1,64 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-import { Container, SizeList, Size, Photo, Title, Price, Details } from "./styles";
+import { Creators as CartActions } from '~/store/ducks/cart'
+
+import {
+  Container,
+  SizeList,
+  Size,
+  Photo,
+  Title,
+  Price,
+  Details
+} from "./styles";
 import Header from "~/components/Header";
+import api from "~/services/api";
 
- class Sizes extends Component {
-  render() {
+class Sizes extends Component {
+  state = {
+    sizes: []
+  };
+
+  componentDidMount = async () => {
     const { navigation } = this.props;
-    const category = navigation.getParam("category");
+    const product = navigation.getParam("product");
+    console.tron.log("product", product);
+    const { data: sizes } = await api.get("sizes");
+
+    this.setState({
+      sizes
+    });
+  };
+
+  handleOnPressSize = size => {
+    const { addItem, navigation } = this.props
+    const product = navigation.getParam("product");
+    console.tron.log('size', size)
+    console.tron.log('product', product)
+    addItem({
+      ...product,
+      size_id: size.id,
+      size: size.description,
+      price: size.price,
+    })
+
+    navigation.navigate('Cart')
+  };
+
+  render() {
+    const { sizes } = this.state;
     return (
       <Container>
         <Header title="Selecionar um tamanho" />
         <SizeList
           numColumns={2}
-          data={category.products}
-          keyExtractor={product => String(product.id)}
-          renderItem={({ item: product }) => (
+          data={sizes}
+          keyExtractor={size => String(size.id)}
+          renderItem={({ item: size }) => (
             <Size
+              onPress={() => this.handleOnPressSize(size)}
               style={{
                 shadowColor: "#bdc3c7",
                 shadowOffset: {
@@ -27,10 +70,10 @@ import Header from "~/components/Header";
                 elevation: 15
               }}
             >
-              <Photo source={{ uri: category.photo_url }} />
+              <Photo source={{ uri: size.photo_url }} />
               <Details>
-                <Title>{product.description}</Title>
-                <Price>R$42,00</Price>
+                <Title>{size.description}</Title>
+                <Price>R${size.price}</Price>
               </Details>
             </Size>
           )}
@@ -44,4 +87,13 @@ import Header from "~/components/Header";
 //   title: 'Selecionar um tamanho',
 // }
 
-export default Sizes
+const mapStateToProps = (state) => ({
+
+})
+
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  ...CartActions
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sizes)

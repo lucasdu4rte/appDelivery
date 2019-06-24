@@ -3,15 +3,22 @@ import React, { Component } from "react";
 import { Container, ProductList, Product, Photo, Title } from "./styles";
 import Header from "~/components/Header";
 
-import { TouchableOpacity } from "react-native";
-import styles from "~/components/Header/styles";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 class Category extends Component {
-  handleCategoryPress = (category) => {
-    const {navigation} = this.props
-    console.tron.log('ONPRESS')
-    navigation.navigate('Sizes', { category })
+  componentDidMount() {
+    const { navigation, selectedCategory } = this.props;
+    // const catego = navigation.getParam("category");
+    // console.tron.log(catego)
+    console.tron.log(selectedCategory);
   }
+
+  handleCategoryPress = product => {
+    const { navigation } = this.props;
+    console.tron.log(product);
+    navigation.navigate("Sizes", { product });
+  };
 
   render() {
     const { navigation } = this.props;
@@ -25,7 +32,7 @@ class Category extends Component {
           keyExtractor={product => String(product.id)}
           renderItem={({ item: product }) => (
             <Product
-              onPress={() => this.handleCategoryPress(category)}
+              onPress={() => this.handleCategoryPress(product)}
               style={{
                 shadowColor: "#bdc3c7",
                 shadowOffset: {
@@ -56,4 +63,13 @@ class Category extends Component {
 //   )
 // }
 
-export default Category
+const mapStateToProps = state => ({
+  selectedCategory: state.selectedCategory
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Category);
