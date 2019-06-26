@@ -7,11 +7,13 @@ import {
   ButtonGoOrder,
   ButtonTextGoOrder,
   ObservationInput,
-  Input
+  Input,
+  FormContent
 } from "./styles";
 
 import Header from "~/components/Header";
 import { colors } from "~/styles";
+import { View } from "react-native";
 
 class Confirm extends Component {
   handleConfirmPress = category => {
@@ -28,28 +30,32 @@ class Confirm extends Component {
       <Container>
         <Header title="Carrinho" leftComponent="R$107,00" />
         {/* Observation */}
-        <ObservationInput
-          multiline={true}
-          numberOfLines={4}
-          placeholder="Alguma observação?"
-        />
-        {/* CEP */}
-        <Input style={{ width: "100%" }} placeholder="Qual seu CEP?" />
-        {/* STREET */}
-        <Input style={{ width: "80%" }} placeholder="Rua" />
-        {/* NUMBER */}
-        <Input style={{ width: "20%" }} placeholder="Nº" />
-        {/* NEIGHBORHOOD */}
-        <Input style={{ width: "100%" }} placeholder="Bairro" />
+        <FormContent>
+          <ObservationInput
+            multiline={true}
+            numberOfLines={10}
+            placeholder="Alguma observação?"
+          />
+          {/* CEP */}
+          <Input style={{ width: "100%" }} placeholder="Qual seu CEP?" />
+          {/* STREET */}
+          <View>
+            <Input style={{ width: "80%" }} placeholder="Rua" />
+            {/* NUMBER */}
+            <Input style={{ width: "20%" }} placeholder="Nº" />
+          </View>
+          {/* NEIGHBORHOOD */}
+          <Input style={{ width: "100%" }} placeholder="Bairro" />
 
-        <ButtonsContainer>
-          <ButtonGoOrder>
-            <ButtonTextGoOrder>
-              Realizar Pedido
-              <Icon name="arrow-right" size={20} />
-            </ButtonTextGoOrder>
-          </ButtonGoOrder>
-        </ButtonsContainer>
+          <ButtonsContainer>
+            <ButtonGoOrder onPress={() => navigation.navigate("Profile")}>
+              <ButtonTextGoOrder>
+                FINALIZAR
+                <Icon name="chevron-right" size={16} style={{ marginLeft: 5 }} />
+              </ButtonTextGoOrder>
+            </ButtonGoOrder>
+          </ButtonsContainer>
+        </FormContent>
       </Container>
     );
   }

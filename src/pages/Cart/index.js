@@ -93,7 +93,7 @@ class Cart extends Component {
           <ButtonMore onPress={() => navigation.navigate("Categories")}>
             <ButtonText>Adicionar mais itens</ButtonText>
           </ButtonMore>
-          <ButtonGoOrder>
+          <ButtonGoOrder onPress={() => navigation.navigate("Confirm")}>
             <ButtonTextGoOrder>
               Realizar Pedido
               <Icon name="chevron-right" size={16} style={{ marginLeft: 5 }} />

@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import moment from "moment"
+import locale from 'moment/locale/pt-br'
 
 import {
   Container,
@@ -11,7 +13,8 @@ import {
 } from "./styles";
 
 import Header from "~/components/Header";
-import { colors } from "~/styles";
+
+moment.locale('pt-br', locale)
 
 class Profile extends Component {
   handleProfilePress = category => {
@@ -27,21 +30,24 @@ class Profile extends Component {
       {
         id: Math.random(),
         photo_url: "",
-        datetime: "Ontem às 17h",
+        // datetime: "Ontem às 17h",
+        datetime: moment().add(1, 'week').toNow(),
         description: "Pedido #1",
         price: 42
       },
       {
         id: Math.random(),
         photo_url: "",
-        datetime: "Há 1 semena",
+        // datetime: "Há 1 semena",
+        datetime: moment().add(2, 'weeks').toNow(),
         description: "Pedido #2",
         price: 42
       },
       {
         id: Math.random(),
         photo_url: "",
-        datetime: "Há 2 meses",
+        // datetime: "Há 2 meses",
+        datetime: moment().add(1, 'months').toNow(),
         description: "Pedido #3",
         price: 29
       }
