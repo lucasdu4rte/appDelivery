@@ -1,38 +1,43 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 import { Container, ProductList, Product, Photo, Title } from "./styles";
 import Header from "~/components/Header";
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { Creators as ProductsActions } from "~/store/ducks/products";
 
-class Category extends Component {
+class Products extends Component {
   componentDidMount() {
-    const { navigation, selectedCategory } = this.props;
-    // const catego = navigation.getParam("category");
+    const { navigation, loadProductsRequest } = this.props;
+    const category = navigation.getParam("category");
+    loadProductsRequest(category.id);
     // console.tron.log(catego)
-    console.tron.log(selectedCategory);
+    // console.tron.log(selectedCategory);
   }
 
-  handleCategoryPress = product => {
+  handleProductPress = product => {
     const { navigation } = this.props;
     console.tron.log(product);
     navigation.navigate("Sizes", { product });
   };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, products } = this.props;
+
+    console.tron.log("products", products);
+
     const category = navigation.getParam("category");
     return (
       <Container>
         <Header title={category.type} />
         <ProductList
           numColumns={2}
-          data={category.products}
+          data={products.data}
           keyExtractor={product => String(product.id)}
           renderItem={({ item: product }) => (
             <Product
-              onPress={() => this.handleCategoryPress(product)}
+              onPress={() => this.handleProductPress(product)}
               style={{
                 shadowColor: "#bdc3c7",
                 shadowOffset: {
@@ -64,12 +69,13 @@ class Category extends Component {
 // }
 
 const mapStateToProps = state => ({
-  selectedCategory: state.selectedCategory
+  products: state.products
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ ...ProductsActions }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Category);
+)(Products);

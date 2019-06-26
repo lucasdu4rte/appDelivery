@@ -25,7 +25,8 @@ class Sizes extends Component {
     const { navigation } = this.props;
     const product = navigation.getParam("product");
     console.tron.log("product", product);
-    const { data: sizes } = await api.get("sizes");
+
+    const { data: sizes } = await api.get(`sizes?product_id=${product.id}`);
 
     this.setState({
       sizes

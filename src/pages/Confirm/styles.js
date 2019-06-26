@@ -13,7 +13,7 @@ export const FormContent = styled.View`
 export const ObservationInput = styled.TextInput.attrs({
   placeholderTextColor: '#999',
 })`
-  box-shadow: 2px 2px 20px #000;
+  /* box-shadow: 2px 2px 20px #000; */
   background: #fff;
   border-radius: 4px;
   padding: 10px 20px;
@@ -26,7 +26,7 @@ export const ObservationInput = styled.TextInput.attrs({
 export const Input = styled.TextInput.attrs({
   placeholderTextColor: '#999',
 })`
-  box-shadow: 5px 2px 5px #000;
+  /* box-shadow: 5px 2px 5px #000; */
   background: #fff;
   border-radius: 4px;
   padding: 0 20px;
@@ -36,6 +36,7 @@ export const Input = styled.TextInput.attrs({
   margin-bottom: 5px;
 `
 export const ButtonsContainer = styled.View`
+  margin-top: 20px;
 `;
 
 export const ButtonGoOrder = styled.TouchableOpacity`

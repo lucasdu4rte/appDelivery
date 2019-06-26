@@ -29,7 +29,7 @@ class Categories extends Component {
 
   handleCategoryPress = category => {
     const { navigation } = this.props;
-    navigation.navigate("Category", { category });
+    navigation.navigate("Products", { category });
   };
 
   render() {
