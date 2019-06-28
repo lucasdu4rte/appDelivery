@@ -2,11 +2,27 @@ import styled from 'styled-components/native'
 
 export const Container = styled.View`
   flex:1;
-  background: #000;
+  background: ${({backgroundColor}) => backgroundColor || '#000'};
   align-items: stretch;
   justify-content: center;
-  padding: 30px;
+  padding: ${({noPadding}) => noPadding ? '0' : '30px'};
 `
+
+export const Background = styled.Image`
+  position: absolute;
+  left: 0;
+  top: 0;
+`;
+
+export const Logo = styled.Image`
+  /* position: absolute;
+  left: 0;
+  top: 0; */
+  align-self: center;
+  margin-bottom: 30px;
+  width: 72px;
+  height: 72px;
+`;
 
 export const Input = styled.TextInput.attrs({
   placeholderTextColor: '#999',
@@ -21,7 +37,7 @@ export const Input = styled.TextInput.attrs({
 `
 
 export const Button = styled.TouchableOpacity`
-  background: #5dc4b3;
+  background: #e5283e;
   border-radius: 3px;
   height: 52px;
   align-items: center;
