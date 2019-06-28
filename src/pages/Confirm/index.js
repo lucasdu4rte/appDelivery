@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
-
+import { View, Text, ActivityIndicator } from "react-native";
+import { withFormik } from "formik";
+import * as Yup from "yup";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -18,7 +20,7 @@ import {
 
 import Header from "~/components/Header";
 // import { colors } from "~/styles";
-import { View } from "react-native";
+
 import api from "~/services/api";
 
 const shadowStyle = {
@@ -32,32 +34,36 @@ const shadowStyle = {
   elevation: 15
 };
 
-class Confirm extends Component {
-  handleConfirmPress = async () => {
-    const { navigation, items, total } = this.props;
+const Confirm = (props) =>  {
+  // handleConfirmPress = async () => {
+    // const { items, total } = this.props;
     // const {navigation} = this.props
-    console.tron.log(items)
-    await api.post('/orders', {
-      total,
-      observation: "Retirar tomate",
-      zip_code: "13408022",
-      address: "Rua Dona Hilda",
-      number: "12",
-      complement: "",
-      neighborhood: "Paulicéia",
-      products: items
-    })
+    // console.tron.log(items);
+    // await api.post("/orders", {
+    //   total,
+    //   observation: "Retirar tomate",
+    //   zip_code: "13408022",
+    //   address: "Rua Dona Hilda",
+    //   number: "12",
+    //   complement: "",
+    //   neighborhood: "Paulicéia",
+    //   products: items
+    // });
     // navigation.navigate('Sizes', { category })
-  };
-
-  render() {
-    const { navigation, total } = this.props;
-    // const category = navigation.getParam("category");
-
+  // };
+    const {
+      total,
+      values,
+      setFieldValue,
+      errors,
+      isSubmitting,
+      handleSubmit
+    } = props;
+    console.tron.log('props', props)
     return (
       <Container>
         <Header
-          title="Carrinho"
+          title="Confirmar Pedido"
           leftComponent={
             "R$" +
             Number(total)
@@ -68,50 +74,76 @@ class Confirm extends Component {
         {/* Observation */}
         <FormContent>
           <ObservationInput
+            value={values.observation}
             multiline={true}
             numberOfLines={10}
             placeholder="Alguma observação?"
             style={shadowStyle}
+            onChangeText={text => setFieldValue("observation", text)}
           />
           {/* CEP */}
           <Input
+            value={values.zip_code}
             style={{ width: "100%", ...shadowStyle }}
             placeholder="Qual seu CEP?"
+            onChangeText={text => setFieldValue("zip_code", text)}
           />
+          { errors.zip_code && <Text>{errors.zip_code}</Text> }
           {/* STREET */}
           <View style={{ width: "100%", ...shadowStyle }}>
-            <Input style={{ width: "80%", ...shadowStyle }} placeholder="Rua" />
+            <Input
+              value={values.street}
+              style={{ width: "80%", ...shadowStyle }}
+              placeholder="Rua"
+              onChangeText={text => setFieldValue("street", text)}
+            />
+            { errors.street && <Text>{errors.street}</Text> }
             {/* NUMBER */}
-            <Input style={{ width: "20%", ...shadowStyle }} placeholder="Nº" />
+            <Input
+              value={values.number}
+              style={{ width: "20%", ...shadowStyle }}
+              placeholder="Nº"
+              onChangeText={text => setFieldValue("number", text)}
+            />
+            { errors.number && <Text>{errors.number}</Text> }
           </View>
           {/* NEIGHBORHOOD */}
           <Input
+            value={values.neighborhood}
             style={{ width: "100%", ...shadowStyle }}
             placeholder="Bairro"
+            onChangeText={text => setFieldValue("neighborhood", text)}
           />
-
+          { errors.neighborhood && <Text>{errors.neighborhood}</Text> }
           <ButtonsContainer>
             <ButtonGoOrder
-            // onPress={() => navigation.navigate("Profile")}
-            onPress={this.handleConfirmPress}
+              // onPress={() => navigation.navigate("Profile")}
+              onPress={() => handleSubmit()}
             >
-              <ButtonTextGoOrder>
-                FINALIZAR
-                <Icon
-                  name="chevron-right"
-                  size={16}
-                  style={{ marginLeft: 5 }}
-                />
-              </ButtonTextGoOrder>
+              <View>
+                {isSubmitting ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <>
+                    <ButtonTextGoOrder>
+                      FINALIZAR
+                      <Icon
+                      name="chevron-right"
+                      size={16}
+                      color="#fff"
+                      style={{ marginLeft: 5 }}
+                      />
+                    </ButtonTextGoOrder>
+                  </>
+                )}
+              </View>
             </ButtonGoOrder>
           </ButtonsContainer>
         </FormContent>
       </Container>
     );
   }
-}
 
-// export default Confirm;
 const mapStateToProps = state => ({
   items: state.cart,
   total: state.cart.reduce((acc, currentItem) => currentItem.price + acc, 0)
@@ -120,7 +152,58 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ ...CartActions }, dispatch);
 
+const FormWrapConfirm = withFormik({
+  mapPropsToValues: () => ({
+    // observation: "",
+    // zip_code: "",
+    // street: "",
+    // number: "",
+    // neighborhood: ""
+    // complement: "",
+    observation: "Retirar tomate",
+    zip_code: "13408022",
+    street: "Rua Dona Hilda",
+    number: "12",
+    neighborhood: "Paulicéia"
+  }),
+  validateOnChange: false,
+  validationSchema: Yup.object().shape({
+    zip_code: Yup.string().required("Este campo é obrigatório"),
+    street: Yup.string().required("Este campo é obrigatório"),
+    number: Yup.string().required("Este campo é obrigatório"),
+    neighborhood: Yup.string().required("Este campo é obrigatório")
+  }),
+
+  handleSubmit: async (values, { setSubmitting, setErrors, props }) => {
+    console.tron.log(values)
+    try {
+      const { data } = await api.post("/orders", {
+        total: props.total,
+        observation: values.observation,
+        zip_code: values.zip_code,
+        address: values.street,
+        number: values.number,
+        complement: "",
+        neighborhood: values.neighborhood,
+        products: props.items
+      });
+      props.navigation.navigate('Profile', { order: data })
+    } catch (error) {
+      console.tron.log(error.message)
+      setSubmitting(false);
+      setErrors({ message: error.message });
+    }
+
+    // apiService.post('/authenticate', values)
+    //   .then(/* sucesso */)
+    //   .catch(err => {
+    //     setSubmitting(false);
+    //     setErrors({ message: err.message });
+    //   });
+  }
+})(Confirm);
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Confirm);
+)(FormWrapConfirm);
