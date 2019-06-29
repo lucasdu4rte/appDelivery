@@ -36,7 +36,7 @@ export const Product = styled.TouchableOpacity.attrs({
 
 export const Cover = styled.Image`
   width: 35px;
-  height: 20px;
+  height: 35px;
   border-radius: 6px;
 `;
 
@@ -102,6 +102,7 @@ export const ButtonText = styled.Text`
 `;
 
 export const ButtonGoOrder = styled.TouchableOpacity`
+  flex-direction: row;
   background: red;
   border-radius: 6px;
   justify-content: center;
