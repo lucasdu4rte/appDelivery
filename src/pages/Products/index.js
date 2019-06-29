@@ -12,20 +12,16 @@ class Products extends Component {
     const { navigation, loadProductsRequest } = this.props;
     const category = navigation.getParam("category");
     loadProductsRequest(category.id);
-    // console.tron.log(catego)
-    // console.tron.log(selectedCategory);
   }
 
   handleProductPress = product => {
     const { navigation } = this.props;
-    console.tron.log(product);
+
     navigation.navigate("Sizes", { product });
   };
 
   render() {
     const { navigation, products } = this.props;
-
-    console.tron.log("products", products);
 
     const category = navigation.getParam("category");
     return (

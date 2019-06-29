@@ -36,7 +36,6 @@ class Categories extends Component {
 
   render() {
     const { types } = this.props;
-    console.tron.log("types", types);
 
     return (
       <Container>

@@ -19,11 +19,9 @@ import api from "~/services/api";
 moment.locale("pt-br");
 
 const Profile = props => {
-  const { navigation, profile } = props;
-  // const category = navigation.getParam("category");
+  const { profile } = props;
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.tron.log(profile);
 
   useEffect(() => {
     api.get(`/orders?filter_by_user_id=${profile.id}`).then(({ data }) => {
