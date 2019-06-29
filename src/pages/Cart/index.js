@@ -43,7 +43,7 @@ class Cart extends Component {
       <Container>
         <Header
           title="Carrinho"
-          leftComponent={
+          rightComponent={
             "R$" +
             Number(total)
               .toFixed(2)
@@ -93,11 +93,15 @@ class Cart extends Component {
           <ButtonMore onPress={() => navigation.navigate("Categories")}>
             <ButtonText>Adicionar mais itens</ButtonText>
           </ButtonMore>
+
           <ButtonGoOrder onPress={() => navigation.navigate("Confirm")}>
-            <ButtonTextGoOrder>
-              Realizar Pedido
-              <Icon name="chevron-right" size={16} style={{ marginLeft: 5 }} />
-            </ButtonTextGoOrder>
+            <ButtonTextGoOrder>Realizar Pedido</ButtonTextGoOrder>
+            <Icon
+              name="chevron-right"
+              size={14}
+              color="#fff"
+              style={{ marginLeft: 10 }}
+            />
           </ButtonGoOrder>
         </ButtonsContainer>
       </Container>

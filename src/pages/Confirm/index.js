@@ -29,120 +29,124 @@ const shadowStyle = {
     width: 0,
     height: 7
   },
-  shadowOpacity: 0.43,
+  shadowOpacity: 0.6,
   shadowRadius: 9.51,
   elevation: 15
 };
 
-const Confirm = (props) =>  {
+const Confirm = props => {
   // handleConfirmPress = async () => {
-    // const { items, total } = this.props;
-    // const {navigation} = this.props
-    // console.tron.log(items);
-    // await api.post("/orders", {
-    //   total,
-    //   observation: "Retirar tomate",
-    //   zip_code: "13408022",
-    //   address: "Rua Dona Hilda",
-    //   number: "12",
-    //   complement: "",
-    //   neighborhood: "Paulicéia",
-    //   products: items
-    // });
-    // navigation.navigate('Sizes', { category })
+  // const { items, total } = this.props;
+  // const {navigation} = this.props
+  // console.tron.log(items);
+  // await api.post("/orders", {
+  //   total,
+  //   observation: "Retirar tomate",
+  //   zip_code: "13408022",
+  //   address: "Rua Dona Hilda",
+  //   number: "12",
+  //   complement: "",
+  //   neighborhood: "Paulicéia",
+  //   products: items
+  // });
+  // navigation.navigate('Sizes', { category })
   // };
-    const {
-      total,
-      values,
-      setFieldValue,
-      errors,
-      isSubmitting,
-      handleSubmit
-    } = props;
-    console.tron.log('props', props)
-    return (
-      <Container>
-        <Header
-          title="Confirmar Pedido"
-          leftComponent={
-            "R$" +
-            Number(total)
-              .toFixed(2)
-              .replace(".", ",")
-          }
+  const {
+    total,
+    values,
+    setFieldValue,
+    errors,
+    isSubmitting,
+    handleSubmit
+  } = props;
+  console.tron.log("props", props);
+  return (
+    <Container>
+      <Header
+        title="Confirmar Pedido"
+        rightComponent={
+          "R$" +
+          Number(total)
+            .toFixed(2)
+            .replace(".", ",")
+        }
+      />
+      {/* Observation */}
+      <FormContent>
+        <ObservationInput
+          value={values.observation}
+          multiline={true}
+          numberOfLines={10}
+          placeholder="Alguma observação?"
+          style={shadowStyle}
+          onChangeText={text => setFieldValue("observation", text)}
         />
-        {/* Observation */}
-        <FormContent>
-          <ObservationInput
-            value={values.observation}
-            multiline={true}
-            numberOfLines={10}
-            placeholder="Alguma observação?"
-            style={shadowStyle}
-            onChangeText={text => setFieldValue("observation", text)}
-          />
-          {/* CEP */}
+        {/* CEP */}
+        <Input
+          value={values.zip_code}
+          style={{ width: "100%", ...shadowStyle }}
+          placeholder="Qual seu CEP?"
+          onChangeText={text => setFieldValue("zip_code", text)}
+        />
+        {errors.zip_code && <Text>{errors.zip_code}</Text>}
+        {/* STREET */}
+        <View style={{ width: "100%", ...shadowStyle }}>
           <Input
-            value={values.zip_code}
-            style={{ width: "100%", ...shadowStyle }}
-            placeholder="Qual seu CEP?"
-            onChangeText={text => setFieldValue("zip_code", text)}
+            value={values.street}
+            style={{ width: "80%", ...shadowStyle }}
+            placeholder="Rua"
+            onChangeText={text => setFieldValue("street", text)}
           />
-          { errors.zip_code && <Text>{errors.zip_code}</Text> }
-          {/* STREET */}
-          <View style={{ width: "100%", ...shadowStyle }}>
-            <Input
-              value={values.street}
-              style={{ width: "80%", ...shadowStyle }}
-              placeholder="Rua"
-              onChangeText={text => setFieldValue("street", text)}
-            />
-            { errors.street && <Text>{errors.street}</Text> }
-            {/* NUMBER */}
-            <Input
-              value={values.number}
-              style={{ width: "20%", ...shadowStyle }}
-              placeholder="Nº"
-              onChangeText={text => setFieldValue("number", text)}
-            />
-            { errors.number && <Text>{errors.number}</Text> }
-          </View>
-          {/* NEIGHBORHOOD */}
+          {errors.street && <Text>{errors.street}</Text>}
+          {/* NUMBER */}
           <Input
-            value={values.neighborhood}
-            style={{ width: "100%", ...shadowStyle }}
-            placeholder="Bairro"
-            onChangeText={text => setFieldValue("neighborhood", text)}
+            value={values.number}
+            style={{ width: "20%", ...shadowStyle }}
+            placeholder="Nº"
+            onChangeText={text => setFieldValue("number", text)}
           />
-          { errors.neighborhood && <Text>{errors.neighborhood}</Text> }
-          <ButtonsContainer>
-            <ButtonGoOrder
-              // onPress={() => navigation.navigate("Profile")}
-              onPress={() => handleSubmit()}
-            >
-              <View>
-                {isSubmitting ? (
-                  <ActivityIndicator color="#fff" />
-                ) : (
-                  <>
-                    <ButtonTextGoOrder>
-                      FINALIZAR
-                      <Icon
-                      name="chevron-right"
-                      size={16}
-                      color="#fff"
-                      style={{ marginLeft: 5 }}
-                      />
-                    </ButtonTextGoOrder>
-                  </>
-                )}
-              </View>
-            </ButtonGoOrder>
-          </ButtonsContainer>
-        </FormContent>
-      </Container>
-    );
-  }
+          {errors.number && <Text>{errors.number}</Text>}
+        </View>
+        {/* NEIGHBORHOOD */}
+        <Input
+          value={values.neighborhood}
+          style={{ width: "100%", ...shadowStyle }}
+          placeholder="Bairro"
+          onChangeText={text => setFieldValue("neighborhood", text)}
+        />
+        {errors.neighborhood && <Text>{errors.neighborhood}</Text>}
+        <ButtonsContainer>
+          <ButtonGoOrder
+            // onPress={() => navigation.navigate("Profile")}
+            onPress={() => handleSubmit()}
+          >
+            <View>
+              {isSubmitting ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <ButtonTextGoOrder>FINALIZAR</ButtonTextGoOrder>
+                  <Icon
+                    name="chevron-right"
+                    size={14}
+                    color="#fff"
+                    style={{ marginLeft: 10 }}
+                  />
+                </View>
+              )}
+            </View>
+          </ButtonGoOrder>
+        </ButtonsContainer>
+      </FormContent>
+    </Container>
+  );
+};
 
 const mapStateToProps = state => ({
   items: state.cart,
@@ -175,7 +179,7 @@ const FormWrapConfirm = withFormik({
   }),
 
   handleSubmit: async (values, { setSubmitting, setErrors, props }) => {
-    console.tron.log(values)
+    console.tron.log(values);
     try {
       const { data } = await api.post("/orders", {
         total: props.total,
@@ -187,9 +191,9 @@ const FormWrapConfirm = withFormik({
         neighborhood: values.neighborhood,
         products: props.items
       });
-      props.navigation.navigate('Profile', { order: data })
+      props.navigation.navigate("Profile", { order: data });
     } catch (error) {
-      console.tron.log(error.message)
+      console.tron.log(error.message);
       setSubmitting(false);
       setErrors({ message: error.message });
     }
