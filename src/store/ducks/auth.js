@@ -30,7 +30,7 @@ export default function auth(state = INITIAL_STATE, action) {
       return { ...state, loading: false, error: action.payload.error };
 
     case Types.LOGIN_REQUEST:
-      return { ...state, loading: true, error: null, token: null };
+      return { ...state, loading: true, signedIn: false, error: null, token: null };
     case Types.LOGIN_SUCCESS:
       return {
         ...state,

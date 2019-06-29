@@ -9,10 +9,16 @@ import { AsyncStorage } from "react-native";
 
 export function* init() {
   const token = yield call([AsyncStorage, "getItem"], "@Delivery:token");
+  const profile = yield call([AsyncStorage, "getItem"], "@Delivery:profile");
+  const parsedProfile = yield call([JSON, "parse"], profile);
 
   if (token) {
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
-    yield put(AuthActions.loginSuccess({ token }));
+
+    yield all([
+      put(AuthActions.loginSuccess({ token })),
+      put(ProfileActions.setProfileData(parsedProfile))
+    ]);
   }
 
   yield put(AuthActions.checkSuccess());
@@ -26,6 +32,7 @@ export function* login(action) {
 
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
     yield call([AsyncStorage, "setItem"], "@Delivery:token", token);
+    yield call([AsyncStorage, "setItem"], "@Delivery:profile", JSON.stringify(user));
 
     yield all([
       put(AuthActions.loginSuccess({ token })),
