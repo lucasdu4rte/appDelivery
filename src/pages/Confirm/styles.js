@@ -20,7 +20,7 @@ export const ObservationInput = styled.TextInput.attrs({
   height: 130px;
   font-size: 16px;
   color: #333;
-  margin-bottom: 5px;
+  margin-bottom: 13px;
 `;
 
 export const Input = styled.TextInput.attrs({
@@ -33,7 +33,7 @@ export const Input = styled.TextInput.attrs({
   height: 52px;
   font-size: 16px;
   color: #333;
-  margin-bottom: 5px;
+  margin-bottom: 13px;
 `
 export const ButtonsContainer = styled.View`
   margin-top: 20px;
