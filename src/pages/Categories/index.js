@@ -13,13 +13,15 @@ import {
   Title,
   Description,
   PrepareTime,
-  Count
+  Count,
+  ButtonMenu
 } from "./styles";
 
 import { Creators as TypesActions } from "~/store/ducks/types";
 
 import Header from "~/components/Header";
 import { colors } from "~/styles";
+import { View, Text } from "react-native";
 
 class Categories extends Component {
   async componentDidMount() {
@@ -38,7 +40,22 @@ class Categories extends Component {
 
     return (
       <Container>
-        <Header title="Pizzaria Don Juan" />
+        <Header
+          leftComponent={
+            <ButtonMenu onPress={() => this.props.navigation.openDrawer()}>
+              <Text style={{ color: colors.light }}>
+                <Icon
+                  name="bars"
+                  size={16}
+                  style={{ marginRight: 5, color: colors.light }}
+                />{" "}
+                Menu
+              </Text>
+            </ButtonMenu>
+          }
+          title="Pizzaria Don Juan"
+        />
+
         <CategoryList
           // ListHeaderComponent={() => <PageTitle>Pizzaria Don Juan</PageTitle>}
           data={types.data}
@@ -62,10 +79,12 @@ class Categories extends Component {
                 <Title>{category.type}</Title>
                 <Description>{category.description}</Description>
                 <PrepareTime>
-                  <Icon name="clock-o" size={16} style={{ marginRight: 5, color: colors.darkTransparent }} />
-                  <Count>
-                    {`${category.prepare_time} mins`}
-                  </Count>
+                  <Icon
+                    name="clock-o"
+                    size={16}
+                    style={{ marginRight: 5, color: colors.darkTransparent }}
+                  />
+                  <Count>{`${category.prepare_time} mins`}</Count>
                 </PrepareTime>
               </Info>
             </Category>
@@ -81,9 +100,7 @@ class Categories extends Component {
   }
 }
 
-// Categories.navigationOptions = {
-//   title: 'Pizzaria Don Juan',
-// }
+Categories.navigationOptions = {};
 
 const mapStateToProps = state => ({
   types: state.types

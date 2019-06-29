@@ -22,6 +22,11 @@ export const PageTitle = styled.Text`
   color: #111;
 `;
 
+export const ButtonMenu = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.9
+})`
+`;
+
 export const Category = styled.TouchableOpacity.attrs({
   activeOpacity: 0.9
 })`
