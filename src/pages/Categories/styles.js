@@ -33,21 +33,21 @@ export const Category = styled.TouchableOpacity.attrs({
   flex-direction: row;
   align-items: center;
   padding: 15px 20px;
-  margin: 20px 20px 0 20px;
+  margin: 10px 20px 0 20px;
   border-radius: 6px;
   background: #fff;
   height: 110px;
 `;
 
 export const Cover = styled.Image`
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
+  width: 80px;
+  height: 80px;
+  /* border-radius: 6px; */
 `;
 
 export const Info = styled.View`
-  margin-left: 45px;
-  margin-right: 35px;
+  margin-left: 15px;
+  margin-right: 65px;
 `;
 
 export const Title = styled.Text`
