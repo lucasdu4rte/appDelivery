@@ -34,43 +34,22 @@ const shadowStyle = {
   elevation: 15
 };
 
-const Confirm = props => {
-  // handleConfirmPress = async () => {
-  // const { items, total } = this.props;
-  // const {navigation} = this.props
-  // console.tron.log(items);
-  // await api.post("/orders", {
-  //   total,
-  //   observation: "Retirar tomate",
-  //   zip_code: "13408022",
-  //   address: "Rua Dona Hilda",
-  //   number: "12",
-  //   complement: "",
-  //   neighborhood: "Paulicéia",
-  //   products: items
-  // });
-  // navigation.navigate('Sizes', { category })
-  // };
-  const {
-    total,
-    values,
-    setFieldValue,
-    errors,
-    isSubmitting,
-    handleSubmit
-  } = props;
-  console.tron.log("props", props);
+const Confirm = ({
+  total,
+  values,
+  setFieldValue,
+  errors,
+  isSubmitting,
+  handleSubmit
+}) => {
+  const totalFormated = new Intl.NumberFormat("pt-br", {
+    style: "currency",
+    currency: "BRL"
+  }).format(total);
+
   return (
     <Container>
-      <Header
-        title="Confirmar Pedido"
-        rightComponent={
-          "R$" +
-          Number(total)
-            .toFixed(2)
-            .replace(".", ",")
-        }
-      />
+      <Header title="Confirmar Pedido" rightComponent={totalFormated} />
       {/* Observation */}
       <FormContent>
         <ObservationInput

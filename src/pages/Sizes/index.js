@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import { Creators as CartActions } from '~/store/ducks/cart'
+import { Creators as CartActions } from "~/store/ducks/cart";
 
 import {
   Container,
@@ -24,28 +24,32 @@ class Sizes extends Component {
   componentDidMount = async () => {
     const { navigation } = this.props;
     const product = navigation.getParam("product");
-    console.tron.log("product", product);
 
     const { data: sizes } = await api.get(`sizes?product_id=${product.id}`);
 
     this.setState({
-      sizes
+      sizes: sizes.map(size => ({
+        ...size,
+        priceFormated: new Intl.NumberFormat("pt-br", {
+          style: "currency",
+          currency: "BRL"
+        }).format(size.price)
+      }))
     });
   };
 
   handleOnPressSize = size => {
-    const { addItem, navigation } = this.props
+    const { addItem, navigation } = this.props;
     const product = navigation.getParam("product");
-    console.tron.log('size', size)
-    console.tron.log('product', product)
+
     addItem({
       ...product,
       size_id: size.id,
       size: size.description,
-      price: size.price,
-    })
+      price: size.price
+    });
 
-    navigation.navigate('Cart')
+    navigation.navigate("Cart");
   };
 
   render() {
@@ -74,7 +78,7 @@ class Sizes extends Component {
               <Photo source={{ uri: size.photo_url }} />
               <Details>
                 <Title>{size.description}</Title>
-                <Price>R${size.price}</Price>
+                <Price>{size.priceFormated}</Price>
               </Details>
             </Size>
           )}
@@ -88,13 +92,17 @@ class Sizes extends Component {
 //   title: 'Selecionar um tamanho',
 // }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({});
 
-})
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      ...CartActions
+    },
+    dispatch
+  );
 
-
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  ...CartActions
-}, dispatch)
-
-export default connect(mapStateToProps, mapDispatchToProps)(Sizes)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Sizes);

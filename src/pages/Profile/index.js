@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import "moment/locale/pt-br";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 import {
   Container,
@@ -31,9 +31,10 @@ const Profile = props => {
         data
           .map(order => ({
             ...order,
-            totalFormated: Number(order.total)
-              .toFixed(2)
-              .replace(".", ","),
+            totalFormated: new Intl.NumberFormat("pt-br", {
+              style: "currency",
+              currency: "BRL"
+            }).format(order.total),
             orderDateFormated: moment(order.order_date).fromNow()
           }))
           .sort((a, b) => moment(b.order_date) - moment(a.order_date))
@@ -66,7 +67,6 @@ const Profile = props => {
               <Description>Pedido #{item.id}</Description>
               <PrepareTime>{item.orderDateFormated}</PrepareTime>
               <Price>
-                R$
                 {item.totalFormated}
               </Price>
             </Info>
@@ -81,6 +81,4 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 
-export default connect(
-  mapStateToProps,
-)(Profile);
+export default connect(mapStateToProps)(Profile);

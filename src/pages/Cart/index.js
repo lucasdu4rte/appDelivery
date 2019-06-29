@@ -28,86 +28,65 @@ import {
 import Header from "~/components/Header";
 // import { colors } from "~/styles";
 
-class Cart extends Component {
-  handleCartPress = category => {
-    // const {navigation} = this.props
-    // console.tron.log('ONPRESS')
-    // navigation.navigate('Sizes', { category })
-  };
+const Cart = ({ navigation, items, total, removeItem }) => {
+  const totalFormated = new Intl.NumberFormat("pt-br", {
+    style: "currency",
+    currency: "BRL"
+  }).format(total);
 
-  render() {
-    const { navigation, items, total, removeItem } = this.props;
-    // const category = navigation.getParam("category");
+  return (
+    <Container>
+      <Header title="Carrinho" rightComponent={totalFormated} />
+      <ProductList
+        data={items}
+        keyExtractor={item => String(item.id)}
+        renderItem={({ item }) => (
+          <Product
+            style={{
+              shadowColor: "#bdc3c7",
+              shadowOffset: {
+                width: 0,
+                height: 7
+              },
+              shadowOpacity: 0.43,
+              shadowRadius: 9.51,
+              elevation: 15
+            }}
+          >
+            <Cover source={{ uri: item.photo_url }} />
+            <Info>
+              <Description>{item.description}</Description>
+              <PrepareTime>{item.size}</PrepareTime>
+              <Price>{item.priceFormated}</Price>
+            </Info>
+            <Actions>
+              <ButtonRemove onPress={() => removeItem(item)}>
+                <ButtonTextRemove>
+                  <Icon name="trash" size={20} />
+                </ButtonTextRemove>
+              </ButtonRemove>
+            </Actions>
+          </Product>
+        )}
+      />
+      <ButtonsContainer>
+        <ButtonMore onPress={() => navigation.navigate("Categories")}>
+          <ButtonText>Adicionar mais itens</ButtonText>
+        </ButtonMore>
 
-    return (
-      <Container>
-        <Header
-          title="Carrinho"
-          rightComponent={
-            "R$" +
-            Number(total)
-              .toFixed(2)
-              .replace(".", ",")
-          }
-        />
-        <ProductList
-          // data={[]}
-          data={items}
-          keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => (
-            <Product
-              // onPress={() => this.handleCategoryPress(category)}
-              style={{
-                shadowColor: "#bdc3c7",
-                shadowOffset: {
-                  width: 0,
-                  height: 7
-                },
-                shadowOpacity: 0.43,
-                shadowRadius: 9.51,
-                elevation: 15
-              }}
-            >
-              <Cover source={{ uri: item.photo_url }} />
-              <Info>
-                <Description>{item.description}</Description>
-                <PrepareTime>{item.size}</PrepareTime>
-                <Price>
-                  R$
-                  {Number(item.price)
-                    .toFixed(2)
-                    .replace(".", ",")}
-                </Price>
-              </Info>
-              <Actions>
-                <ButtonRemove onPress={() => removeItem(item)}>
-                  <ButtonTextRemove>
-                    <Icon name="trash" size={20} />
-                  </ButtonTextRemove>
-                </ButtonRemove>
-              </Actions>
-            </Product>
-          )}
-        />
-        <ButtonsContainer>
-          <ButtonMore onPress={() => navigation.navigate("Categories")}>
-            <ButtonText>Adicionar mais itens</ButtonText>
-          </ButtonMore>
-
-          <ButtonGoOrder onPress={() => navigation.navigate("Confirm")}>
-            <ButtonTextGoOrder>Realizar Pedido</ButtonTextGoOrder>
-            <Icon
-              name="chevron-right"
-              size={14}
-              color="#fff"
-              style={{ marginLeft: 10 }}
-            />
-          </ButtonGoOrder>
-        </ButtonsContainer>
-      </Container>
-    );
-  }
-}
+        <ButtonGoOrder onPress={() => navigation.navigate("Confirm")}>
+          <ButtonTextGoOrder>Realizar Pedido</ButtonTextGoOrder>
+          <Icon
+            name="chevron-right"
+            size={14}
+            color="#fff"
+            style={{ marginLeft: 10 }}
+          />
+        </ButtonGoOrder>
+      </ButtonsContainer>
+    </Container>
+  );
+};
 
 // Cart.navigationOptions = {
 //   title: 'Selecione um tipo',
@@ -119,7 +98,13 @@ class Cart extends Component {
 // }
 
 const mapStateToProps = state => ({
-  items: state.cart,
+  items: state.cart.map(item => ({
+    ...item,
+    priceFormated: new Intl.NumberFormat("pt-br", {
+      style: "currency",
+      currency: "BRL"
+    }).format(item.price)
+  })),
   total: state.cart.reduce((acc, currentItem) => currentItem.price + acc, 0)
 });
 
