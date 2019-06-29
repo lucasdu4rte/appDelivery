@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { Alert } from "react-native";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -26,6 +27,7 @@ import {
 } from "./styles";
 
 import Header from "~/components/Header";
+
 // import { colors } from "~/styles";
 
 const Cart = ({ navigation, items, total, removeItem }) => {
@@ -33,6 +35,26 @@ const Cart = ({ navigation, items, total, removeItem }) => {
     style: "currency",
     currency: "BRL"
   }).format(total);
+
+  const removeItemAlert = (item) => {
+    Alert.alert(
+      "Deseja mesmo remover este item do carrinho?",
+      "O item será removido do carrinho",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel"
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            removeItem(item)
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  };
 
   return (
     <Container>
@@ -60,7 +82,7 @@ const Cart = ({ navigation, items, total, removeItem }) => {
               <Price>{item.priceFormated}</Price>
             </Info>
             <Actions>
-              <ButtonRemove onPress={() => removeItem(item)}>
+              <ButtonRemove onPress={() => removeItemAlert(item)}>
                 <ButtonTextRemove>
                   <Icon name="trash" size={20} />
                 </ButtonTextRemove>

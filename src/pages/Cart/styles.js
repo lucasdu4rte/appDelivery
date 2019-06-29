@@ -1,5 +1,8 @@
 import styled from "styled-components/native";
-import { getStatusBarHeight, getBottomSpace } from "react-native-iphone-x-helper";
+import {
+  getStatusBarHeight,
+  getBottomSpace
+} from "react-native-iphone-x-helper";
 import { colors } from "~/styles";
 
 export const Container = styled.View`
@@ -86,7 +89,9 @@ export const ButtonsContainer = styled.View`
   padding-right: 30px;
 `;
 
-export const ButtonRemove = styled.TouchableOpacity``;
+export const ButtonRemove = styled.TouchableOpacity.attrs({
+  hitSlop: { top: 10, bottom: 10, left: 10, right: 10 }
+})``;
 
 export const ButtonMore = styled.TouchableOpacity`
   border-radius: 6px;
