@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { View, ActivityIndicator } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -15,10 +16,12 @@ import {
 } from "./styles";
 import Header from "~/components/Header";
 import api from "~/services/api";
+import { colors } from "~/styles";
 
 class Sizes extends Component {
   state = {
-    sizes: []
+    sizes: [],
+    loading: true,
   };
 
   componentDidMount = async () => {
@@ -34,7 +37,8 @@ class Sizes extends Component {
           style: "currency",
           currency: "BRL"
         }).format(size.price)
-      }))
+      })),
+      loading: false,
     });
   };
 
@@ -53,11 +57,12 @@ class Sizes extends Component {
   };
 
   render() {
-    const { sizes } = this.state;
+    const { sizes, loading } = this.state;
     return (
       <Container>
         <Header title="Selecionar um tamanho" />
         <SizeList
+          ListHeaderComponent={() => loading && <ActivityIndicator size="small" color={colors.white} />}
           numColumns={2}
           data={sizes}
           keyExtractor={size => String(size.id)}

@@ -21,7 +21,7 @@ import { Creators as TypesActions } from "~/store/ducks/types";
 
 import Header from "~/components/Header";
 import { colors } from "~/styles";
-import { View, Text } from "react-native";
+import { Text, ActivityIndicator } from "react-native";
 
 class Categories extends Component {
   async componentDidMount() {
@@ -54,9 +54,8 @@ class Categories extends Component {
           }
           title="Pizzaria Don Juan"
         />
-
         <CategoryList
-          // ListHeaderComponent={() => <PageTitle>Pizzaria Don Juan</PageTitle>}
+          ListHeaderComponent={() => types.loading && <ActivityIndicator size="small" color={colors.white} />}
           data={types.data}
           keyExtractor={ty => String(ty.id)}
           renderItem={({ item: category }) => (

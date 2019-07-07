@@ -31,7 +31,6 @@ export const Product = styled.TouchableOpacity.attrs({
 export const Photo = styled.Image`
   width: 130px;
   height: 130px;
-  border-width: 1px;
 `;
 
 export const Title = styled.Text`

@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { ActivityIndicator } from "react-native";
 
 import { Container, ProductList, Product, Photo, Title } from "./styles";
 import Header from "~/components/Header";
 
 import { Creators as ProductsActions } from "~/store/ducks/products";
+import { colors } from "~/styles";
 
 class Products extends Component {
   componentDidMount() {
@@ -28,6 +30,7 @@ class Products extends Component {
       <Container>
         <Header title={category.type} />
         <ProductList
+          ListHeaderComponent={() => products.loading && <ActivityIndicator size="small" color={colors.white} />}
           numColumns={2}
           data={products.data}
           keyExtractor={product => String(product.id)}

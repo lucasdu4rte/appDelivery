@@ -1,5 +1,8 @@
 import styled from "styled-components/native";
-import { getStatusBarHeight, getBottomSpace } from "react-native-iphone-x-helper";
+import {
+  getStatusBarHeight,
+  getBottomSpace
+} from "react-native-iphone-x-helper";
 import { colors } from "~/styles";
 
 export const Container = styled.View`
