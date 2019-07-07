@@ -60,6 +60,7 @@ const Signup = ({ signupRequest, navigation, auth: { loading, error } }) => {
             autoCapitalize="none"
             autoCorrect={false}
             placeholder="Digite seu email"
+            keyboardType="email-address"
           />
 
           <Input

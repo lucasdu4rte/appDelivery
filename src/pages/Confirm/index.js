@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { View, Text, ActivityIndicator } from "react-native";
 import { withFormik } from "formik";
 import * as Yup from "yup";
+import getCep from "cep-promise";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -23,6 +24,9 @@ import Header from "~/components/Header";
 
 import api from "~/services/api";
 
+const debounceEvent = (callback, time = 250, interval) => (...args) =>
+  clearTimeout(interval, (interval = setTimeout(callback, time, ...args)));
+
 const shadowStyle = {
   shadowColor: "#bdc3c7",
   shadowOffset: {
@@ -42,10 +46,24 @@ const Confirm = ({
   isSubmitting,
   handleSubmit
 }) => {
+  const [loadingCep, setLoadingCep] = useState(false);
   const totalFormated = new Intl.NumberFormat("pt-br", {
     style: "currency",
     currency: "BRL"
   }).format(total);
+
+  const getAddress = debounceEvent(cepText => {
+    if (cepText.length >= 8) {
+      setLoadingCep(true);
+      getCep(cepText).then(response => {
+        console.tron.log(response);
+        setFieldValue('street', response.street)
+        setFieldValue('neighborhood', response.neighborhood)
+
+        setLoadingCep(false);
+      });
+    }
+  });
 
   return (
     <Container>
@@ -61,31 +79,44 @@ const Confirm = ({
           onChangeText={text => setFieldValue("observation", text)}
         />
         {/* CEP */}
-        <Input
-          value={values.zip_code}
-          style={{ width: "100%", ...shadowStyle }}
-          placeholder="Qual seu CEP?"
-          onChangeText={text => setFieldValue("zip_code", text)}
-        />
+        <View style={{ flexDirection: "row" }}>
+          <Input
+            value={values.zip_code}
+            style={{ width: "90%", ...shadowStyle }}
+            placeholder="Qual seu CEP?"
+            inlineImageLeft='search_icon'
+            keyboardType="number-pad"
+            onChangeText={text => {
+              setFieldValue("zip_code", text);
+              getAddress(text);
+            }}
+          />
+          <View style={{ width: "10%", alignItems: "center", marginTop: 15 }}>
+            {loadingCep && <ActivityIndicator />}
+          </View>
+        </View>
         {errors.zip_code && <Text>{errors.zip_code}</Text>}
         {/* STREET */}
-        <View style={{ width: "100%", ...shadowStyle }}>
+        <View style={{ flexDirection: "row", width: "100%", ...shadowStyle }}>
           <Input
             value={values.street}
-            style={{ width: "80%", ...shadowStyle }}
+            style={{ width: "70%", marginRight: "5%", ...shadowStyle }}
             placeholder="Rua"
             onChangeText={text => setFieldValue("street", text)}
           />
-          {errors.street && <Text>{errors.street}</Text>}
           {/* NUMBER */}
           <Input
             value={values.number}
-            style={{ width: "20%", ...shadowStyle }}
+            style={{ width: "25%", ...shadowStyle }}
             placeholder="Nº"
+            keyboardType="number-pad"
             onChangeText={text => setFieldValue("number", text)}
           />
-          {errors.number && <Text>{errors.number}</Text>}
         </View>
+        {(errors.street || errors.number) && (
+          <Text>Os campos Rua e Número são obrigatórios</Text>
+        )}
+
         {/* NEIGHBORHOOD */}
         <Input
           value={values.neighborhood}
@@ -137,17 +168,17 @@ const mapDispatchToProps = dispatch =>
 
 const FormWrapConfirm = withFormik({
   mapPropsToValues: () => ({
-    // observation: "",
-    // zip_code: "",
-    // street: "",
-    // number: "",
-    // neighborhood: ""
-    // complement: "",
-    observation: "Retirar tomate",
-    zip_code: "13408022",
-    street: "Rua Dona Hilda",
-    number: "12",
-    neighborhood: "Paulicéia"
+    observation: "",
+    zip_code: "",
+    street: "",
+    number: "",
+    neighborhood: "",
+    complement: ""
+    // observation: "Retirar tomate",
+    // zip_code: "13408022",
+    // street: "Rua Dona Hilda",
+    // number: "12",
+    // neighborhood: "Paulicéia"
   }),
   validateOnChange: false,
   validationSchema: Yup.object().shape({
