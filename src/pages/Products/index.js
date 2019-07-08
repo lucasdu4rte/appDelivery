@@ -48,7 +48,7 @@ class Products extends Component {
                 elevation: 15
               }}
             >
-              <Photo source={{ uri: category.photo_url }} />
+              <Photo source={{ uri: product.photo_url }} />
               <Title>{product.description}</Title>
             </Product>
           )}
