@@ -174,11 +174,6 @@ const FormWrapConfirm = withFormik({
     number: "",
     neighborhood: "",
     complement: ""
-    // observation: "Retirar tomate",
-    // zip_code: "13408022",
-    // street: "Rua Dona Hilda",
-    // number: "12",
-    // neighborhood: "Paulicéia"
   }),
   validateOnChange: false,
   validationSchema: Yup.object().shape({
@@ -201,7 +196,8 @@ const FormWrapConfirm = withFormik({
         neighborhood: values.neighborhood,
         products: props.items
       });
-      props.navigation.navigate("Profile", { order: data });
+      props.resetCart()
+      props.navigation.navigate("Perfil", { order: data });
     } catch (error) {
       console.tron.log(error.message);
       setSubmitting(false);
