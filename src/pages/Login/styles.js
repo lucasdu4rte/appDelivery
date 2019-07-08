@@ -65,8 +65,9 @@ export const ButtonTextSignup = styled.Text`
 `
 
 export const Error = styled.Text`
-  color: #ff917e;
+  color: #e74c3c;
   margin-bottom: 20px;
   font-size: 16px;
   font-weight: bold;
+  text-shadow: 1px 1px #000;
 `
