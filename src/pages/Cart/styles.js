@@ -38,8 +38,8 @@ export const Product = styled.TouchableOpacity.attrs({
 `;
 
 export const Cover = styled.Image`
-  width: 35px;
-  height: 35px;
+  width: 80px;
+  height: 80px;
   border-radius: 6px;
 `;
 
