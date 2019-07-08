@@ -31,7 +31,6 @@ export const Size = styled.TouchableOpacity.attrs({
 export const Photo = styled.Image`
   width: 90px;
   height: 90px;
-  border-width: 1px;
 `;
 
 export const Details = styled.View`
